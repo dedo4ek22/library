@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>People</title>
+</head>
+<body>
+<p th:text="${people.getName()}"></p>
+<p th:text="${people.getId()}"></p>
+<p th:text="${people.getDateOfBirth()}"></p>
+<br/>
+<a th:href="@{/library/people/{id}/edit(id=${people.getId()})}">Edit</a>
+<br/>
+<form th:method="DELETE" th:action="@{/library/people/{id}(id=${people.getId()})}">
+  <input type="submit" value="Delete"/>
+</form>
+  <br/>
+  add book to reader
+  <br/>
+<form th:method="PATCH" th:action="@{/library/people/{book_id}/setBook(book_id=${people.getId()})}">
+  <label for="book">chose book for reader</label>
+  <select th:object="${book}" th:field="*{id}" id="book">
+    <option th:each="book : ${books}" th:value="${book.getId()}"
+            th:text="${book.getName()}" th:if="${book.getPeople_id() < 1}"></option>
+  </select>
+  <br>
+  <input type="submit" value="add book"/>
+</form>
+<br/>
+<form th:method="DELETE" th:action="@{/library/people/{book_id}/setBook(book_id=${people.getId()})}">
+  <label for="book1">delete book from reader</label>
+  <select th:object="${book}" th:field="*{id}" id="book1">
+    <option th:each="book : ${books}" th:value="${book.getId()}"
+            th:text="${book.getName()}" th:if="${book.getPeople_id().equals(people.getId())}"></option>
+  </select>
+  <br>
+  <input type="submit" value="delete book"/>
+</form>
+</body>
+</html>
